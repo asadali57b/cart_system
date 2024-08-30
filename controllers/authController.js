@@ -215,41 +215,22 @@ catch(err){
         const userId = req.user._id;
     
         try {
-            // Retrieve the user's cart
             const cart = await Cart.findOne({ userId }).populate('products.productId');
             if (!cart || cart.products.length === 0) {
                 return res.status(400).json({ message: 'Cart is empty' });
             }
     
-            // Initialize totalPrice
-            let totalPrice = 0;
-    
-            // Calculate the total price
-            cart.products.forEach(item => {
-                const price = item.productId.price || 0;  // Ensure price is a number
-                const quantity = item.quantity || 0;  // Ensure quantity is a number
-                totalPrice += price * quantity;
-            });
-    
-            // Validate totalPrice to ensure it's a valid number
-            // if (isNaN(totalPrice) || totalPrice <= 0) {
-            //     return res.status(400).json({ error: 'Invalid total price' });
-            // }
-    
-            // Create a new order
+          
             const newOrder = new Order({
                 userId,
                 products: cart.products,
-                // totalPrice,
                 orderDate: new Date()
             });
             await newOrder.save();
     
-            // Clear the cart after checkout
             cart.products = [];
             await cart.save();
     
-            // Respond with the order confirmation
             res.json({ message: 'Order placed successfully', orderId: newOrder._id });
         } catch (err) {
             res.status(500).json({ error: 'Failed to process checkout' });
