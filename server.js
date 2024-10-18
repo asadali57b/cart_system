@@ -8,6 +8,15 @@ app.use(express.json());
 app.use(helmet());
 
 const authRouter=require('./routers/authRouter')
+
+
+app.get("/",(req,res)=>{
+
+
+    res.status(200).json({
+        message:"Fetched Succefully"
+    })
+})
 app.use('/api/user',authRouter)
 const port=6000;
 
