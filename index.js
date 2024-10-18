@@ -1,5 +1,5 @@
 const mongoose= require("mongoose");
-mongoose.connect("mongodb://localhost:27017/user-authentication-system");
+mongoose.connect("mongodb+srv://asadali57b:asad2614432@cluster0.hdlpy.mongodb.net/testdb?retryWrites=true&w=majority&appName=Cluster0");
 
 const express= require("express");
 const helmet=require("helmet");
